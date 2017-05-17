@@ -93,14 +93,7 @@ public class MainActivity extends AppCompatActivity {
         generate.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view){
 
-
-                //KeyGenerator keys = new KeyGenerator(context);
-
-
                 String msg1 = editText.getText().toString();
-
-                //String msg2 = new String("abc");
-                //String msg1 = msg2 + msg3;
 
                 PublicKey publicKey;
                 PrivateKey privateKey;
@@ -109,29 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 String encrypted = null,decrypted;
                 publicKey = keys.getPublicKey();
                 privateKey = keys.getPrivateKey();
-
-                //String pubKeyStr = editText2.getText().toString();
-                /*
-                String pubKeyStr =  getIntent().getStringExtra("publicK");
-                byte[] sigBytes = Base64.decode(pubKeyStr);
-                X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(sigBytes);
-
-                KeyFactory keyFact = null;
-                try {
-                    keyFact = KeyFactory.getInstance("RSA", "BC");
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (NoSuchProviderException e) {
-                    e.printStackTrace();
-                }
-                try {
-                     publicKey =keyFact.generatePublic(x509KeySpec);
-                } catch (InvalidKeySpecException e) {
-                    e.printStackTrace();
-                }
-
-                */
-
 
 
                 try {
@@ -185,23 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
                 show2.setText("Decrypted: "+decrypted);
 
-                /*
-                CharsetEncoder asciiEncoder =
-                        Charset.forName("ISO-8859-1").newEncoder(); // or "ISO-8859-1" for ISO Latin 1
 
-
-                if( asciiEncoder.canEncode(encrypted)){
-                    showKey.setText("readable");
-                }else{
-                    showKey.setText("unreadable");
-                }
-
-                if( asciiEncoder.canEncode(decrypted)){
-                    show2.setText("readable");
-                }else{
-                    show2.setText("unreadable");
-                }
-                */
                 String method = "register";
                 BackgroundTask backgroundTask = new BackgroundTask(context);
                 backgroundTask.execute(method,encrypted);

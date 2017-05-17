@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/mainText"
         android:id="@android:id/empty"
-        android:text="There is no data"
+        android:text="There is no messages to show"
         android:textStyle="bold" />
 
 

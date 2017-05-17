@@ -2,20 +2,10 @@ package com.example.panafana.cryptonew;
 
 import android.app.ListActivity;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-
-
 //import org.bouncycastle.util.encoders.Base64;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -27,14 +17,12 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import com.example.panafana.cryptonew.KeyGenerator;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import org.bouncycastle.util.encoders.Base64;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class PublicMessages  extends ListActivity {
 
@@ -58,10 +46,12 @@ public class PublicMessages  extends ListActivity {
         Map<String, ?> temp = SP2.getAll();
 
         ArrayList<String> keys = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<String>();
         ArrayList<String> mess = new ArrayList<String>(set);
 
         for (Map.Entry<String, ?> entry : temp.entrySet()) {
             keys.add(entry.getValue().toString());
+            names.add(entry.getKey().toString());
         }
 
         ArrayList<String> decr = new ArrayList<String>();
@@ -116,7 +106,7 @@ public class PublicMessages  extends ListActivity {
                 }
                 String decrypted = new String(decryptedBytes);
                 if(flag){
-                    decr.add(decrypted);
+                    decr.add(decrypted + " by "+names.get(j));
                     System.out.println(decrypted+ "aaaaa");
                 }
 
