@@ -28,8 +28,6 @@ public class PublicMessages  extends ListActivity {
 
     SharedPreferences SP;
     SharedPreferences SP2;
-    SharedPreferences SP3;
-    ArrayList<String> messages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +38,7 @@ public class PublicMessages  extends ListActivity {
 
         SP = getSharedPreferences("messages", MODE_PRIVATE);
         SP2 = getSharedPreferences("KeyChain",MODE_PRIVATE);
-        SP3 = getSharedPreferences("KeyPair", MODE_PRIVATE);
-        
+
         Set<String> set = SP.getStringSet("messages", null);
         Map<String, ?> temp = SP2.getAll();
 

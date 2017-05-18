@@ -29,7 +29,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Display" />
-        <activity android:name=".PublicMessages"></activity>
+        <activity android:name=".PublicMessages" />
+        <activity android:name=".PrivateMessages"></activity>
     </application>
 
 </manifest>

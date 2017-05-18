@@ -36,6 +36,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -91,17 +94,36 @@ public class MainActivity extends AppCompatActivity {
 
 
         generate.setOnClickListener(new View.OnClickListener() {
-            public void onClick (View view){
+            public void onClick (View view) {
 
                 String msg1 = editText.getText().toString();
 
-                PublicKey publicKey;
+                PublicKey publicKey = null;
                 PrivateKey privateKey;
-                byte [] encryptedBytes = new byte[0],decryptedBytes = new byte[0];
-                Cipher cipher = null,cipher1 = null;
-                String encrypted = null,decrypted;
-                publicKey = keys.getPublicKey();
+                byte[] encryptedBytes = new byte[0], decryptedBytes = new byte[0];
+                Cipher cipher = null, cipher1 = null;
+                String encrypted = null, decrypted;
+                //publicKey = keys.getPublicKey();
                 privateKey = keys.getPrivateKey();
+
+
+                String pubKeyStr = getIntent().getStringExtra("publicK");
+                byte[] sigBytes = Base64.decode(pubKeyStr);
+                X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(sigBytes);
+
+                KeyFactory keyFact = null;
+                try {
+                    keyFact = KeyFactory.getInstance("RSA", "BC");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (NoSuchProviderException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    publicKey = keyFact.generatePublic(x509KeySpec);
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
+                }
 
 
                 try {
@@ -112,26 +134,54 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 try {
-                    cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+                    cipher.init(Cipher.ENCRYPT_MODE, publicKey);
                 } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 }
+
+                byte[] encryptedBytes3 = new byte[0];
+
                 try {
-                    encryptedBytes = cipher.doFinal(msg1.getBytes());
+                    encryptedBytes3 = cipher.doFinal(msg1.getBytes());
                 } catch (IllegalBlockSizeException e) {
                     e.printStackTrace();
                 } catch (BadPaddingException e) {
                     e.printStackTrace();
-
                 }
 
-                byte[] encryptedBytes2 = Base64.encode(encryptedBytes);
+/*
+                try {
+                    cipher = Cipher.getInstance("RSA/None/PKCS1Padding");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }
+
+
+                encryptedBytes3 = cipher.update(encryptedBytes);
+                try {
+                    encryptedBytes3 = cipher.doFinal();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                }
+*/
+
+                byte[] encryptedBytes2 = Base64.encode(encryptedBytes3);
                 encrypted = new String(encryptedBytes2);
 
                 show.setText(new String(encryptedBytes));
 
+                /*
                 try {
-                    cipher1=Cipher.getInstance("RSA/None/PKCS1Padding");
+                    cipher1 = Cipher.getInstance("RSA/None/PKCS1Padding");
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (NoSuchPaddingException e) {
@@ -149,16 +199,45 @@ public class MainActivity extends AppCompatActivity {
                 } catch (BadPaddingException e) {
                     e.printStackTrace();
                 }
+                */
                 decrypted = new String(decryptedBytes);
 
                 //String decryptedStr = new String(decrypted);
 
-                show2.setText("Decrypted: "+decrypted);
+                show2.setText("Decrypted: " + decrypted);
 
+
+                //SIGN
+/*
+                Signature privateSignature = null;
+                try {
+                    privateSignature = Signature.getInstance("SHA256withRSA");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    privateSignature.initSign(privateKey);
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    privateSignature.update(msg1.getBytes());
+                } catch (SignatureException e) {
+                    e.printStackTrace();
+                }
+
+                byte[] signature = new byte[0];
+                try {
+                    signature = privateSignature.sign();
+                } catch (SignatureException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(signature.length);
+*/
 
                 String method = "register";
                 BackgroundTask backgroundTask = new BackgroundTask(context);
-                backgroundTask.execute(method,encrypted);
+                backgroundTask.execute(method, encrypted);
 
 
             }
