@@ -38,6 +38,8 @@ public class PublicMessages  extends ListActivity {
 
         SP = getSharedPreferences("messages", MODE_PRIVATE);
         SP2 = getSharedPreferences("KeyChain",MODE_PRIVATE);
+        KeyGenerator keyzz= new KeyGenerator(this);
+
 
         Set<String> set = SP.getStringSet("messages", null);
         Map<String, ?> temp = SP2.getAll();
@@ -53,9 +55,10 @@ public class PublicMessages  extends ListActivity {
 
         ArrayList<String> decr = new ArrayList<String>();
         for (int i=0; i<mess.size(); i++){
-            for (int j=0; j<keys.size() ; j++) {
+            //for (int j=0; j<keys.size() ; j++) {
 
                 boolean flag =true;
+                /*
                 String pubKeyStr = keys.get(j);
                 byte[] sigBytes = org.bouncycastle.util.encoders.Base64.decode(pubKeyStr);
                 X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(sigBytes);
@@ -72,6 +75,9 @@ public class PublicMessages  extends ListActivity {
                 } catch (InvalidKeySpecException e) {
                     e.printStackTrace();
                 }
+                */
+
+
 
                 String tempmess = mess.get(i);
                 byte[] encryptedBytes = new byte[0];
@@ -88,7 +94,7 @@ public class PublicMessages  extends ListActivity {
                     e.printStackTrace();
                 }
                 try {
-                    cipher1.init(Cipher.DECRYPT_MODE, publicKey);
+                    cipher1.init(Cipher.DECRYPT_MODE, keyzz.getPrivateKey());
                 } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 }
@@ -103,7 +109,7 @@ public class PublicMessages  extends ListActivity {
                 }
                 String decrypted = new String(decryptedBytes);
                 if(flag){
-                    decr.add(decrypted + " by "+names.get(j));
+                    decr.add(decrypted/* + " by "+names.get(j)*/);
                     System.out.println(decrypted+ "aaaaa");
                 }
 
@@ -111,7 +117,7 @@ public class PublicMessages  extends ListActivity {
 
 
 
-            }
+           // }
 
         }
 
