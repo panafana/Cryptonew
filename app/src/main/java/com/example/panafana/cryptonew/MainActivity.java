@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         Button button2 = (Button) findViewById(R.id.button2);
         Button store = (Button) findViewById(R.id.store);
         Button display = (Button) findViewById(R.id.display);
-        final TextView show = (TextView)  findViewById(R.id.show);
-        final TextView show2 = (TextView)  findViewById(R.id.show2);
+        Button signed = (Button) findViewById(R.id.signed);
+
         final EditText editText = (EditText) findViewById(R.id.editText);
         final EditText editText2 = (EditText) findViewById(R.id.editText2);
         final TextView showKey = (TextView) findViewById(R.id.showKey);
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 byte[] encryptedBytes2 = Base64.encode(encryptedBytes3);
                 encrypted = new String(encryptedBytes2);
 
-                show.setText(new String(encryptedBytes));
+
 
                 /*
                 try {
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //String decryptedStr = new String(decrypted);
 
-                show2.setText("Decrypted: " + decrypted);
+
 
 
                 //SIGN
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String method = "register";
                 BackgroundTask backgroundTask = new BackgroundTask(context);
-                backgroundTask.execute(method, encrypted);
+                backgroundTask.execute(method, encrypted,null);
 
 
             }
@@ -274,6 +274,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        signed.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View view){
+                Intent i = new Intent(getApplicationContext(),SignedMessage.class);
+                startActivity(i);
+            }
+
+        });
+
 
         display.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view){

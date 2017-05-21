@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
@@ -42,11 +44,13 @@ public class PublicMessages  extends ListActivity {
 
 
         Set<String> set = SP.getStringSet("messages", null);
+        Set<String> set2 = SP.getStringSet("signatures", null);
         Map<String, ?> temp = SP2.getAll();
 
         ArrayList<String> keys = new ArrayList<String>();
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<String> mess = new ArrayList<String>(set);
+        ArrayList<String> sign = new ArrayList<String>(set2);
 
         for (Map.Entry<String, ?> entry : temp.entrySet()) {
             keys.add(entry.getValue().toString());
@@ -55,10 +59,10 @@ public class PublicMessages  extends ListActivity {
 
         ArrayList<String> decr = new ArrayList<String>();
         for (int i=0; i<mess.size(); i++){
-            //for (int j=0; j<keys.size() ; j++) {
+            for (int j=0; j<keys.size() ; j++) {
 
                 boolean flag =true;
-                /*
+                Signature signature = null;
                 String pubKeyStr = keys.get(j);
                 byte[] sigBytes = org.bouncycastle.util.encoders.Base64.decode(pubKeyStr);
                 X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(sigBytes);
@@ -75,7 +79,9 @@ public class PublicMessages  extends ListActivity {
                 } catch (InvalidKeySpecException e) {
                     e.printStackTrace();
                 }
-                */
+
+
+
 
 
 
@@ -108,6 +114,31 @@ public class PublicMessages  extends ListActivity {
                     flag = false;
                 }
                 String decrypted = new String(decryptedBytes);
+
+
+                try {
+                    signature = Signature.getInstance("SHA256withRSA");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    signature.initVerify(publicKey);
+                    signature.update(decryptedBytes);
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (SignatureException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    if(signature.verify(sign.get(j).getBytes())){
+                        System.out.println("Verified");
+                    }else{
+                        System.out.println("Something is wrong");
+                    }
+                } catch (SignatureException e) {
+                    e.printStackTrace();
+                }
                 if(flag){
                     decr.add(decrypted/* + " by "+names.get(j)*/);
                     System.out.println(decrypted+ "aaaaa");
@@ -117,7 +148,7 @@ public class PublicMessages  extends ListActivity {
 
 
 
-           // }
+           }
 
         }
 

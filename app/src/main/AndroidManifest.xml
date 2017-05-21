@@ -28,9 +28,17 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".KeyList2"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Display" />
         <activity android:name=".PublicMessages" />
-        <activity android:name=".PrivateMessages"></activity>
+        <activity android:name=".SignedMessage"></activity>
     </application>
 
 </manifest>

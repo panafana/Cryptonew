@@ -66,6 +66,7 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
         String method = params[0];
         if (method.equals("register")) {
             String name = params[1];
+            String sign = params[2];
 
             try {
                 URL url = new URL(reg_url);
@@ -76,7 +77,7 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
                 //httpURLConnection.setDoInput(true);
                 OutputStream OS = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                String data = URLEncoder.encode("message", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8") ;
+                String data = URLEncoder.encode("message", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8") +"&"+URLEncoder.encode("signature", "UTF-8")+ "=" + URLEncoder.encode(sign, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

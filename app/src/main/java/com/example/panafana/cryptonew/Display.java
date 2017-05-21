@@ -40,6 +40,7 @@ public class Display extends AppCompatActivity {
     SharedPreferences.Editor SPE;
 
     ArrayList<String> messages = new ArrayList<>();
+    ArrayList<String> signatures = new ArrayList<>();
     private String jsonResult;
     private String url = "http://83.212.84.230/getdata.php";
     private ListView listView;
@@ -134,9 +135,12 @@ public class Display extends AppCompatActivity {
             for (int i = 0; i <  jsonMainNode.length() ; i++) {
                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                 String name = jsonChildNode.optString("message");
+                String sign = jsonChildNode.optString("signature");
                 //String number = jsonChildNode.optString("employee_no");
                 String outPut = name ;
+                String outPut2 = sign;
                 messages.add(outPut);
+                signatures.add(outPut2);
                 System.out.println(outPut.length());
                 //textv1.setText(name);
                 //textv1.setText(jsonResult);
@@ -150,8 +154,12 @@ public class Display extends AppCompatActivity {
         }
         SharedPreferences.Editor editor = SP.edit();
         Set<String> set = new HashSet<String>();
+        Set<String> set2 = new HashSet<String>();
+
         set.addAll(messages);
+        set2.addAll(signatures);
         editor.putStringSet("messages", set);
+        editor.putStringSet("signatures", set2);
         editor.apply();
         editor.commit();
         System.out.println("stored");
