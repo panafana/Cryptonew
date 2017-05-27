@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,40 +18,22 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.os.AsyncTask;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyStore;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import com.example.panafana.cryptonew.KeyGenerator;
 import android.content.SharedPreferences;
-
 import org.bouncycastle.util.encoders.Base64;
-
 import static android.R.attr.id;
 import static android.R.attr.name;
 
@@ -77,26 +58,26 @@ public class MainActivity extends AppCompatActivity {
         Button button2 = (Button) findViewById(R.id.button2);
         Button store = (Button) findViewById(R.id.store);
         Button display = (Button) findViewById(R.id.display);
-        Button signed = (Button) findViewById(R.id.signed);
+
 
         final EditText editText = (EditText) findViewById(R.id.editText);
         final EditText editText2 = (EditText) findViewById(R.id.editText2);
+        final EditText editText3 = (EditText) findViewById(R.id.editText3);
         final TextView showKey = (TextView) findViewById(R.id.showKey);
         final KeyGenerator keys = new KeyGenerator(context);
 
-
+        //Key Generator
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view){
-
                 keys.generateKeys();
 
             }});
 
-
+        //Message Encryption and Send
         generate.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view) {
 
-                String msg1 = editText.getText().toString();
+                String msg1 = editText3.getText().toString();
 
                 PublicKey publicKey = null;
                 PrivateKey privateKey;
@@ -104,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 Cipher cipher = null, cipher1 = null;
                 String encrypted = null, decrypted;
                 //publicKey = keys.getPublicKey();
-                privateKey = keys.getPrivateKey();
+
 
 
                 String pubKeyStr = getIntent().getStringExtra("publicK");
@@ -173,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 */
-
+                //Encode to Base64
                 byte[] encryptedBytes2 = Base64.encode(encryptedBytes3);
                 encrypted = new String(encryptedBytes2);
 
@@ -237,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String method = "register";
                 BackgroundTask backgroundTask = new BackgroundTask(context);
-                backgroundTask.execute(method, encrypted,null);
+                backgroundTask.execute(method, encrypted,"0");
 
 
             }
@@ -245,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+        //Show Public Key
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view){
                 showKey.setTextIsSelectable(true);
@@ -256,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
+        //Store new Contact
         store.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view){
 
@@ -275,15 +256,9 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        signed.setOnClickListener(new View.OnClickListener() {
-            public void onClick (View view){
-                Intent i = new Intent(getApplicationContext(),SignedMessage.class);
-                startActivity(i);
-            }
-
-        });
 
 
+        //Go to Display Class
         display.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view){
                 Intent i = new Intent(getApplicationContext(),Display.class);
@@ -292,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        //Go to your Messages Class
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick (View view){
                 Intent i = new Intent(getApplicationContext(),PublicMessages.class);

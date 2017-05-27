@@ -59,31 +59,10 @@ public class PublicMessages  extends ListActivity {
 
         ArrayList<String> decr = new ArrayList<String>();
         for (int i=0; i<mess.size(); i++){
-            for (int j=0; j<keys.size() ; j++) {
 
+                boolean verification=false;
                 boolean flag =true;
                 Signature signature = null;
-                String pubKeyStr = keys.get(j);
-                byte[] sigBytes = org.bouncycastle.util.encoders.Base64.decode(pubKeyStr);
-                X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(sigBytes);
-                KeyFactory keyFact = null;
-                try {
-                    keyFact = KeyFactory.getInstance("RSA", "BC");
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (NoSuchProviderException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    publicKey =  keyFact.generatePublic(x509KeySpec);
-                } catch (InvalidKeySpecException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-
 
                 String tempmess = mess.get(i);
                 byte[] encryptedBytes = new byte[0];
@@ -114,7 +93,33 @@ public class PublicMessages  extends ListActivity {
                     flag = false;
                 }
                 String decrypted = new String(decryptedBytes);
+                System.out.println(decrypted);
+                byte[] decryptedBytes2 = decrypted.getBytes();
+                System.out.println(decryptedBytes2);
+/*
+            for (int j=0; j<keys.size() ; j++) {
 
+                String pubKeyStr = keys.get(j);
+                byte[] sigBytes = org.bouncycastle.util.encoders.Base64.decode(pubKeyStr);
+                X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(sigBytes);
+                KeyFactory keyFact = null;
+
+
+                try {
+                    keyFact = KeyFactory.getInstance("RSA", "BC");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (NoSuchProviderException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    publicKey =  keyFact.generatePublic(x509KeySpec);
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
+                }
+
+                byte[] signedData = sign.get(i).getBytes();
+                byte[] signedData2 = Base64.encode(signedData);
 
                 try {
                     signature = Signature.getInstance("SHA256withRSA");
@@ -123,32 +128,44 @@ public class PublicMessages  extends ListActivity {
                 }
                 try {
                     signature.initVerify(publicKey);
-                    signature.update(decryptedBytes);
+                    signature.update(decryptedBytes2);
                 } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 } catch (SignatureException e) {
                     e.printStackTrace();
                 }
 
+                System.out.println("Received hash: "+sign.get(i));
+                System.out.println("Sgined Data " + signedData);
+                System.out.println("Sgined Data2 " + signedData2);
+
                 try {
-                    if(signature.verify(sign.get(j).getBytes())){
+                    if(signature.verify(signedData2)){
                         System.out.println("Verified");
+                        verification=true;
+                        break;
                     }else{
                         System.out.println("Something is wrong");
                     }
                 } catch (SignatureException e) {
                     e.printStackTrace();
                 }
-                if(flag){
+           }
+
+           */
+
+
+            if(flag){
+                if(verification){
+                    decr.add(decrypted + " by "+names.get(i));
+
+                }else{
                     decr.add(decrypted/* + " by "+names.get(j)*/);
                     System.out.println(decrypted+ "aaaaa");
                 }
+            }
 
 
-
-
-
-           }
 
         }
 

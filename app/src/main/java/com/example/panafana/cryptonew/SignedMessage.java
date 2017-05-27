@@ -147,10 +147,10 @@ public class SignedMessage extends AppCompatActivity {
                 }
 
 
-                System.out.println("hash: " + signedData.toString());
+                System.out.println("hash: " + signedData);
+                byte[] signedData2 = Base64.encode(signedData);
 
 
-                /*
 
                 try {
                     signature.initVerify(pbk);
@@ -162,7 +162,7 @@ public class SignedMessage extends AppCompatActivity {
                 }
 
                 try {
-                    if(signature.verify(signedData)){
+                    if(signature.verify(signedData2)){
                         System.out.println("Verified");
                     }else{
                         System.out.println("Something is wrong");
@@ -172,7 +172,7 @@ public class SignedMessage extends AppCompatActivity {
                 }
 
 
-*/
+
 
 
                 String method = "register";
