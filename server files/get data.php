@@ -1,9 +1,9 @@
 <?php
 
-$db = "crypto";
-$user = "root";
-$pass = "05560556";
-$server = "127.0.0.1";
+$db = "";
+$user = "";
+$pass = "";
+$server = "";
 
 
 $con = mysqli_connect($server,$user,$pass,$db);
