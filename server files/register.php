@@ -9,6 +9,4 @@ ini_set('display_errors', 1);
 $sign = $_POST["signature"];
  $sql =mysqli_query($conn, "insert into whiteboard (message, signature)  values$
 
-
-
 ?>
